@@ -59,8 +59,11 @@ var getPath = (el) => {
 
 		// проверяем селектор по айдишнику + классам 
 		if(ElClass){
-			let sel = ElClass.replace(' ', '.');
-			csssel = `${csssel}.${sel}`;
+			while(ElClass.indexOf(' ') >= 0){
+				ElClass = ElClass.replace(' ', '.');
+			}
+						
+			csssel = `${csssel}.${ElClass}`;
 			if(checkSelector(csssel, 'Id + Class'))
 				return csssel;
 
@@ -84,16 +87,5 @@ var getPath = (el) => {
 
 	}
 
-	/* Надо ли руками обнулять значения переменных или этим потом обяательно займётся сборщик мусора?
-
-	finally{
-		qs 			= null;
-		csssel 		= null;
-		ElId 		= null;
-		ElClass 	= null;
-		isUnique 	= null;
-	}
-
-	*/
 
 } 

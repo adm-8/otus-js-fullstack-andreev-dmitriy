@@ -10,7 +10,7 @@ var getPath = (el) => {
 	let checkSelector = (sel, block) => {
 		qs = document.querySelectorAll(sel);
 		if(qs.length == 1){
-			console.log(`Found by ${block}...`);
+			// console.log(`Found by ${block}...`);
 			isUnique = true;
 			return isUnique;
 		}	

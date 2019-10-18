@@ -128,7 +128,28 @@ document.body.innerHTML = "";
 var myTreeElement = document.createElement('my-tree');
 
 // закидываем в него объект в виде JSON-строки
-myTreeElement.tree_object = '{"dome": 123}';
+// myTreeElement.tree_object = '{"dom_el_1": 123, "dom_el_2": 321}';
+myTreeElement.tree_object = `{
+	"id": 1,
+	"sss": 321,
+	"items": [{
+		"id": 2,
+		"items": [{ 
+			"id": 3,
+			"objects": [{
+				"id": 2,
+				"items": [{ 
+					"id": 3  
+					,"some_param": [{
+						"some_param_sub1" : "some_param_sub1",
+						"some_param_sub2" : "some_param_sub2"
+						
+					}]
+				}]
+			}]
+		}]
+	}]
+}`;
 
 // добавляем в документ
 document.body.appendChild(myTreeElement);
@@ -145,11 +166,22 @@ myTreeElement_object.tree_object =  {
 	"items": [{
 		"id": 2,
 		"items": [{ 
-			"id": 3  
-			,"some_param": [{
+			"id": 3,
+			"some_param": [{
 				"some_param_sub1" : "some_param_sub1",
 				"some_param_sub2" : "some_param_sub2"
 				
+			}],
+			"objects": [{
+				"id": 2,
+				"items": [{ 
+					"id": 3  
+					,"some_param": [{
+						"some_param_sub1" : "some_param_sub1",
+						"some_param_sub2" : "some_param_sub2"
+						
+					}]
+				}]
 			}]
 		}]
 	}]

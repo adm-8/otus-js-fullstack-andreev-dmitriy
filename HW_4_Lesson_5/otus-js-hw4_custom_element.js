@@ -128,7 +128,6 @@ document.body.innerHTML = "";
 var myTreeElement = document.createElement('my-tree');
 
 // закидываем в него объект в виде JSON-строки
-// myTreeElement.tree_object = '{"dom_el_1": 123, "dom_el_2": 321}';
 myTreeElement.tree_object = `{
 	"id": 1,
 	"sss": 321,

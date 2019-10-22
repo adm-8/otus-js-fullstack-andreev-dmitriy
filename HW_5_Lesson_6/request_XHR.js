@@ -45,7 +45,6 @@ var myXMLHttpRequest = (
             console.log(`Ошибка при отправке запроса №${i+1} : ${e.toString()}`)
         }
     }
-
 };
 
 

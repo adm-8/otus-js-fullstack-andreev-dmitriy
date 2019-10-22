@@ -8,33 +8,38 @@ var myXMLHttpRequest = (
 
 ) => {
 
+    // функция для обработки ответа
     let fetchResp = (resp) => {
         console.log(resp);
     }
 
     console.log(`Стартуем запуск ${reqCnt} запрос(ов) методом ${method} по адресу ${URL} в ${async ? 'асинхронном' : 'синхронном'} режиме...`);
-
-  
-
    
     // reqCnt раз
     for(let i=0; i < reqCnt; i++){
 
         try{
-              // создаем экземпляр XMLHttpRequest
+
+            // создаем экземпляр XMLHttpRequest
             let xhr = new XMLHttpRequest();
+            let rn = `${async ? 'асинхронный' : 'синхронный'} №${i+1}`;
+            console.log(`Отправляем запрос ${rn}`);
+
             xhr.onreadystatechange = () => {
                 if (xhr.readyState === 4) {
-                    fetchResp(`Запрос был обработан за ${xhr.response} мс`);
-                    }
+                    resp_obj = JSON.parse(xhr.response);
+                    fetchResp(`Запрос ${resp_obj.req_num} был обработан за ${resp_obj.resp_time} мс`);
+                }
             }
 
             // передаем параметры запроса
             xhr.open(method, URL, async);
-                
+            
+            // формируем тело запроса
+            let msg = `{"req_num": "${rn}"}`;
+
             // и отправляем запрос
-            xhr.send();
-            console.log(`Запрос ${i+1} был отправлен...`) ;
+            xhr.send(msg);
 
         }catch(e){
             console.log(`Ошибка при отправке запроса №${i+1} : ${e.toString()}`)

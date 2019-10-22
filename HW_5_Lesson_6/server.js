@@ -14,6 +14,7 @@ const setTimeoutPromise = util.promisify(setTimeout);
 // создаем экземпляр HTTP сервера
 const server = http.createServer((req, res) => {
 
+
     // готовим HTTP-код ответа
     res.statusCode = 200;
 
@@ -26,10 +27,39 @@ const server = http.createServer((req, res) => {
     // выставляем задержку в delay мс
     setTimeoutPromise(delay)
         .then( () => {
-            // завершим фрмирование ответа и вернем кол-во мс 
-            let rt = (Date.now() - req_start).toString();
-            res.end(rt);
-            console.log(`Request done in ${rt} ms.`);
+            
+            let body_str = '';
+            let body_obj = null;
+            let resp_obj = {};
+
+            let req_num = null;
+
+            try{
+                
+                // получим тело запроса 
+                req.on('data', chunk => {
+                    body_str += chunk.toString();
+                });
+
+                req.on('end', () => {
+                    if(body_str && typeof(body_str)==='string'){
+                    
+                        body_obj = JSON.parse(body_str);
+                        req_num = body_obj.req_num;
+
+                    }
+
+                    // завершим фрмирование ответа и вернем кол-во мс 
+                    resp_obj.req_num = req_num;
+                    resp_obj.resp_time = (Date.now() - req_start).toString();
+                    console.log(resp_obj);
+                    res.end(JSON.stringify(resp_obj));
+                });               
+
+            }catch(e){
+                console.log(e.toString());
+                res.end();
+            }
         } )
         .catch( (e) => { console.log(e.toString()) });
 

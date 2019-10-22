@@ -26,8 +26,11 @@ const server = http.createServer((req, res) => {
     setTimeoutPromise(delay)
         .then( () => {
             // завершим фрмирование ответа и вернем кол-во мс 
-            res.end((Date.now() - req_start).toString());
-        } );
+            let rt = (Date.now() - req_start).toString();
+            res.end(rt);
+            console.log(`Request done in ${rt} ms.`);
+        } )
+        .catch( (e) => { console.log(e.toString()) });
 
     
 });

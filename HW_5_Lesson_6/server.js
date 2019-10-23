@@ -1,5 +1,5 @@
 // задержка запроса в мс
-const delay = 100; 
+const delay = 1000; 
 
 // подключаем необходимый для работы HTTP сервера модуль и готовим хост и порт для прослушивания
 const http = require('http');
@@ -20,48 +20,54 @@ const server = http.createServer((req, res) => {
 
     // и указываем тип возвращаемого контента
     res.setHeader('Content-Type', 'text/plain');
+    
+    let body_str = '';
+    let body_obj = null;
+    let resp_obj = {};
 
-    // засечем время
-    let req_start = Date.now();
+    let req_num = null;
 
-    // выставляем задержку в delay мс
-    setTimeoutPromise(delay)
-        .then( () => {
-            
-            let body_str = '';
-            let body_obj = null;
-            let resp_obj = {};
 
-            let req_num = null;
+    try{
+        
+        // получим тело запроса 
+        req.on('data', chunk => {
+            body_str += chunk.toString();
+        });
 
-            try{
+        req.on('end', () => {
+
+            // засечем время
+            let req_start = Date.now();
+
+            // выставляем задержку в delay мс
+            setTimeoutPromise(delay)
+            .then( () => {
+
+                if(body_str && typeof(body_str)==='string'){
                 
-                // получим тело запроса 
-                req.on('data', chunk => {
-                    body_str += chunk.toString();
-                });
+                    body_obj = JSON.parse(body_str);
+                    req_num = body_obj.req_num;
 
-                req.on('end', () => {
-                    if(body_str && typeof(body_str)==='string'){
-                    
-                        body_obj = JSON.parse(body_str);
-                        req_num = body_obj.req_num;
+                }
 
-                    }
+                // завершим фрмирование ответа и вернем кол-во мс 
+                resp_obj.req_num = req_num;
+                resp_obj.resp_time = (Date.now() - req_start).toString();
+                res.end(JSON.stringify(resp_obj));
+                
+                console.log(`Запрос выполнен за ${Date.now() - req_start} мс`);
+                
+            
+            } )
+            .catch( (e) => { console.log(e.toString()) });
+        });               
 
-                    // завершим фрмирование ответа и вернем кол-во мс 
-                    resp_obj.req_num = req_num;
-                    resp_obj.resp_time = (Date.now() - req_start).toString();
-                    console.log(resp_obj);
-                    res.end(JSON.stringify(resp_obj));
-                });               
-
-            }catch(e){
-                console.log(e.toString());
-                res.end();
-            }
-        } )
-        .catch( (e) => { console.log(e.toString()) });
+    }catch(e){
+        console.log(e.toString());
+        res.end();
+    }
+       
 
     
 });

@@ -10,7 +10,7 @@
 
 2) Открыть командную строку, запустить файл request.js в ноде с необходимыми параметрами:
 
-	node request.js host=0.0.0.0 port=3000 reqNum=10 async=false 
+	node request.js host=0.0.0.0 port=4000 reqNum=10 async=false 
 
 	Где: 
 		reqNum - кол-во отправляемых запросов. Defalult = 5

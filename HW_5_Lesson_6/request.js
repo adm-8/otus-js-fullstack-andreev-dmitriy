@@ -47,12 +47,6 @@ const sendRequest = (
         });
 
         
-        // если были отправлены не все запросы
-        // и функция запующена в Асинхронном режиме
-        // отпарвим ещё запрос, но не дожидаясь обработки ответа предыдущим
-        if(rn < totalReq && async === true){
-            sendRequest(rn+1, totalReq, host, port);
-        }
 
     }); // end of const req = http.request
     
@@ -60,6 +54,12 @@ const sendRequest = (
     req.write(encodedData);
     req.end();
     
+    // если были отправлены не все запросы
+    // и функция запующена в Асинхронном режиме
+    // отпарвим ещё запрос, но не дожидаясь обработки ответа предыдущим
+    if(rn < totalReq && async === true){
+        sendRequest(rn+1, totalReq, host, port);
+    }
 };
 
 

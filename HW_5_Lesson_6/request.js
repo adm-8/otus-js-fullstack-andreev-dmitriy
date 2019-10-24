@@ -10,17 +10,16 @@ const options = {
     ,method: 'POST'
 };
 
-const sendRequest = (data) => {
+const sendRequest = (rn, totalReq) => {
+
+    data = {"req_num": rn}; // просто для примера, в теле запроса будем отправлять номер запроса
 
     encodedData = JSON.stringify(data);
 
     const req = http.request(options, (resp) => {
-        resp_str = '';
-        resp_start_time = Date.now();
-        resp_time = 0;
-
 
         // получаем данные 
+        resp_str = '';
         resp.on('data', (chunk) => {
             resp_str += chunk;
         }); 
@@ -28,8 +27,13 @@ const sendRequest = (data) => {
         // по завершению запроса преобразуем строковый ответ в объект
         resp.on('end', () => {
             resp_obj = JSON.parse(resp_str);
-            resp_time = Date.now() - resp_start_time;
-            console.log(`Запрос ${resp_obj.req_num} был обработан за ${resp_time} мс\n`);
+            console.log(`Запрос ${resp_obj.req_num} был обработан за ${resp_obj.resp_time} мс\nТело ответа = ${resp_str}\n\n`);
+            
+            // если были отправлены не все запросы, отпарвим ещё разок
+            if(rn < totalReq){
+                sendRequest(rn+1, totalReq);
+            }
+
         });
 
     }); // end of const req = http.request
@@ -37,8 +41,7 @@ const sendRequest = (data) => {
     console.log(`Отпрвка запроса ${data.req_num}\n`);
     req.write(encodedData);
     req.end();
+    
 };
 
-for(let i = 0; i < reqNum; i++ ){
-    sendRequest({"req_num": i+1});
-}
+sendRequest(1, reqNum);

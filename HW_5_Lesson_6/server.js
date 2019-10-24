@@ -1,10 +1,25 @@
-// задержка запроса в мс
-const delay = 100; 
+// задаем дефолтные настройки
+let delay = 100; 
+let port = 3000;
+
+// получим данные переданные из командной строки через process.argv
+console.log('\nБыли переданы следующие аргументы:\n');
+let args = process.argv.slice(2);
+args.forEach((val, index) => {
+    param = val.split('=');
+    console.log(param);
+ 
+    switch(param[0]){
+        case 'delay': delay = param[1]; break;
+        case 'port': port = param[1]; break;
+    }
+});
+
+
 
 // подключаем необходимый для работы HTTP сервера модуль и готовим хост и порт для прослушивания
 const http = require('http');
 const hostname = '127.0.0.1';
-const port = 3000;
 
 // подрубаем необходимый модуль и создаем promise-ready функцию setTimeout
 const util = require('util');
@@ -74,5 +89,5 @@ const server = http.createServer((req, res) => {
 
 // стартуем сервер для прослушки
 server.listen(port, hostname, () => {
-  console.log(`Server running at http://${hostname}:${port}/`);
+  console.log(`\n\nServer running at http://${hostname}:${port}/ with delay = ${delay}`);
 });

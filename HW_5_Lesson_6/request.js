@@ -1,6 +1,6 @@
 // задаем дефолтные настройки
 let reqNum = 5;
-let async = true;
+let asyncMode = true;
 let host = '127.0.0.1';
 let port = 3000;
 
@@ -40,7 +40,7 @@ const sendRequest = (
             // если были отправлены не все запросы
             // и функция запующена в синхронном режиме
             // отпарвим ещё запрос только по завершению предыдущего
-            if(rn < totalReq && async === false){
+            if(rn < totalReq && asyncMode === false){
                 sendRequest(rn+1, totalReq, host, port );
             }
             
@@ -57,7 +57,7 @@ const sendRequest = (
     // если были отправлены не все запросы
     // и функция запующена в Асинхронном режиме
     // отпарвим ещё запрос, но не дожидаясь обработки ответа предыдущим
-    if(rn < totalReq && async === true){
+    if(rn < totalReq && asyncMode === true){
         sendRequest(rn+1, totalReq, host, port);
     }
 };
@@ -73,7 +73,7 @@ args.forEach((val, index) => {
  
     switch(param[0]){
         case 'reqNum': reqNum = param[1]; break;
-        case 'async': (param[1] === 'false' || param[1] === '0') ? async = false: async = true; break;
+        case 'asyncMode': (param[1] === 'false' || param[1] === '0') ? asyncMode = false: asyncMode = true; break;
         case 'host': host = param[1]; break;
         case 'port': port = param[1]; break;
     }
@@ -81,7 +81,7 @@ args.forEach((val, index) => {
 
 console.log('\nПриступаем к обработке запросов с итоговыми настройками:\n');
 console.log(`reqNum = ${reqNum}`);
-console.log(`async = ${async}`);
+console.log(`asyncMode = ${asyncMode}`);
 console.log(`host = ${host}`);
 console.log(`port = ${port}`);
 console.log('\n\n* * * * * * *\n');

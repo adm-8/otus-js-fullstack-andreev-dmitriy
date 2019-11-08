@@ -11,12 +11,12 @@ node server.js port=4000 delay=100
 
 2) Открыть командную строку, запустить файл request.js в ноде с необходимыми параметрами:
 ```
-node request.js host=0.0.0.0 port=4000 reqNum=10 async=false 
+node request.js host=0.0.0.0 port=4000 reqNum=10 asyncMode=false 
 ```
 
 	Где: 
 		reqNum - кол-во отправляемых запросов. Defalult = 5
-		async - можно передеать false или 0 для отправки в СИнхронном режиме. 
+		asyncMode - можно передеать false или 0 для отправки в СИнхронном режиме. 
 		host - адрес хоста. Defalult = 127.0.0.1
 		port - номер порта. Defalult = 3000
 		
